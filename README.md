@@ -42,12 +42,6 @@ can use withState function to process updates before actually pass to setState
     return { ...updates, withStateNumber: updates.number }
   }}
 >
-  <Consumer>
-    {state => (
-      <div>
-        {ctx.withStateNumber}
-      </button>
-    )}
-  </Consumer>
+  <Consumer>{state => <div>{ctx.withStateNumber}</div>}</Consumer>
 </Provider>
 ```
