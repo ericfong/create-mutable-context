@@ -20,11 +20,10 @@ const createMutableContext = globalWithState => {
 
   class MutableProvider extends Component {
     state = runWithState(
-      {
-        ...this.props.defaultState,
+      Object.assign({}, this.props.defaultState, {
         // eslint-disable-next-line react/no-unused-state
         setState: (updater, callback) => this.setState(wrapUpdater(updater), callback),
-      },
+      }),
       {},
       this.props
     )
