@@ -1,0 +1,56 @@
+{
+  "name": "create-mutable-context",
+  "version": "0.1.0",
+  "description": "wrap new React.createContext() to provide mutate function for Consumer",
+  "scripts": {
+    "test": "jest",
+    "build": "babel src -d lib --copy-files --ignore __tests__",
+    "prepublish": "yarn build"
+  },
+  "main": "lib/index.js",
+  "repository": "https://github.com/ericfong/create-mutable-context",
+  "homepage": "https://www.npmjs.com/package/create-mutable-context",
+  "author": "Eric Fong <ericff@gmail.com>",
+  "license": "MIT",
+  "keywords": [
+    "react",
+    "context",
+    "mutate",
+    "mutation",
+    "mutatable"
+  ],
+  "files": [
+    "lib"
+  ],
+  "dependencies": {
+    "create-react-context": "^0.2.1"
+  },
+  "peerDependencies": {
+    "prop-types": "^15.0.0",
+    "react": "^0.14.0 || ^15.0.0 || ^16.0.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-eslint": "^8.2.2",
+    "babel-plugin-module-resolver": "3.1.0",
+    "babel-plugin-transform-class-properties": "6.24.1",
+    "babel-preset-env": "1.6.1",
+    "babel-preset-react": "^6.24.1",
+    "enzyme": "^3.2.0",
+    "enzyme-adapter-react-16": "^1.1.0",
+    "enzyme-to-json": "^3.2.2",
+    "eslint": "4.18.2",
+    "eslint-config-airbnb": "16.1.0",
+    "eslint-plugin-babel": "4.1.2",
+    "eslint-plugin-dependencies": "2.4.0",
+    "eslint-plugin-import": "2.9.0",
+    "eslint-plugin-jest": "21.13.0",
+    "eslint-plugin-jsx-a11y": "6.0.3",
+    "eslint-plugin-react": "7.7.0",
+    "jest": "^21.2.1",
+    "prop-types": "^15.6.0",
+    "raf": "^3.4.0",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0"
+  }
+}

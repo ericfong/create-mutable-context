@@ -1,0 +1,93 @@
+env:
+  browser: true
+  es6: true
+  jest: true
+  node: true
+extends: airbnb
+globals:
+  __DEV__: true
+parser: babel-eslint
+plugins:
+  - babel
+  - import
+  - lodash
+  - react
+  - dependencies
+root: true
+rules:
+  arrow-body-style: off
+  arrow-parens: off
+  class-methods-use-this: off
+  comma-dangle:
+    - warn
+    - arrays: always-multiline
+      exports: always-multiline
+      functions: ignore
+      imports: always-multiline
+      objects: always-multiline
+  consistent-return: off
+  dependencies/no-cycles:
+    - warn
+    - skip:
+        - table
+  function-paren-newline: warn
+  import/default: error
+  import/export: error
+  import/named: error
+  import/newline-after-import: warn
+  import/no-unresolved:
+    - error
+    - amd: true
+      commonjs: true
+  import/prefer-default-export: off
+  jsx-a11y/href-no-hash: off
+  linebreak-style: off
+  max-len:
+    - warn
+    - code: 140
+  no-console:
+    - warn
+    - allow:
+        - warn
+        - error
+        - time
+        - timeEnd
+  no-mixed-operators: off
+  no-multi-assign: off
+  no-param-reassign: off
+  no-plusplus: off
+  no-restricted-globals:
+    - warn
+    - self
+    - find
+    - this
+    - postMessage
+    - name
+  no-trailing-spaces: warn
+  no-underscore-dangle: off
+  no-unused-expressions: warn
+  no-unused-labels: warn
+  no-unused-vars: warn
+  prefer-const: warn
+  prefer-destructuring: off
+  quotes:
+    - warn
+    - single
+  react/prop-types: off
+  semi:
+    - warn
+    - never
+settings:
+  import/extensions:
+    - .js
+    - .jsx
+    - .json
+  import/resolver:
+    node:
+      extensions:
+        - .js
+        - .jsx
+        - .json
+      moduleDirectory:
+        - node_modules
+        - .

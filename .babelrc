@@ -1,0 +1,15 @@
+{
+  "presets": [
+    [
+      "env",
+      {
+        "loose": true,
+        "targets": {
+          "browsers": ["last 2 versions", "ie >= 9"]
+        }
+      }
+    ],
+    "react"
+  ],
+  "plugins": ["transform-class-properties"]
+}
