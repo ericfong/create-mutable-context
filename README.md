@@ -95,7 +95,7 @@ enhancer is a function that accept ctx and return modified ctx
 
 You can also assign enhancer to Provider props.
 
-Both enhancers are run in Provider constructor once (with provider instance props at that time). defaultEnhancer will be run before Provider enhancer. 
+Both enhancers are run in Provider constructor once (with provider instance props at that time). defaultEnhancer will be run before Provider enhancer.
 
 ```js
 import createMutableContext from 'create-mutable-context'
@@ -118,7 +118,7 @@ const App = () => (
     <C.Consumer>
       {(value, ctx) => (
         <button
-          // ctx got both inc1 and inc2 functions
+          // ctx get both inc1 and inc2 functions
           onClick={ctx.inc1}
           onMouseOver={ctx.inc2}
         >
