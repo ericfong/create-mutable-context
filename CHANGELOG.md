@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.3.0"></a>
+# [0.3.0](https://github.com/ericfong/create-mutable-context/compare/v0.2.0...v0.3.0) (2018-03-18)
+
+
+### Features
+
+* add enhancer to modify ctx before pass down ([08b930a](https://github.com/ericfong/create-mutable-context/commit/08b930a))
+
+
+
 <a name="0.2.0"></a>
 # [0.2.0](https://github.com/ericfong/create-mutable-context/compare/v0.1.3...v0.2.0) (2018-03-18)
 
