@@ -10,7 +10,6 @@ parser: babel-eslint
 plugins:
   - babel
   - import
-  - lodash
   - react
   - dependencies
 root: true
