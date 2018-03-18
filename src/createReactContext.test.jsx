@@ -26,7 +26,7 @@ test('basic', () => {
     }
   }
   const dom = (
-    <Provider value={1}>
+    <Provider defaultValue={1}>
       <Child />
     </Provider>
   )

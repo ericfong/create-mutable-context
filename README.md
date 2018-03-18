@@ -15,7 +15,7 @@ import createMutableContext from 'create-mutable-context'
 
 const { Provider, Consumer } = createMutableContext()
 
-<Provider value={1}>
+<Provider defaultValue={1}>
   <Consumer>
     {ctx => {
       // ctx contain value and a set function

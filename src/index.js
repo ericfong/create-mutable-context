@@ -8,8 +8,10 @@ export const wrapUpdateField = (updater, stateKey) => {
     : { [stateKey]: updater }
 }
 
-const createMutableContext = (defaultValue, defaultEnhancer) => {
-  const { Provider, Consumer } = createReactContext(defaultValue)
+const findDefined = (...args) => args.find(a => a !== undefined)
+
+const createMutableContext = (globalDefaultValue, defaultEnhancer) => {
+  const { Provider, Consumer } = createReactContext(globalDefaultValue)
 
   class MutableProvider extends Component {
     constructor(props) {
@@ -17,7 +19,7 @@ const createMutableContext = (defaultValue, defaultEnhancer) => {
 
       let state = {
         set: this.set,
-        value: this.props.value || defaultValue,
+        value: findDefined(props.value, props.defaultValue, globalDefaultValue),
       }
 
       if (defaultEnhancer) state = defaultEnhancer(state, props)
@@ -34,11 +36,13 @@ const createMutableContext = (defaultValue, defaultEnhancer) => {
     }
 
     set = (newValue, callback) => {
-      const { onChange } = this.props
-      if (onChange) {
-        onChange(newValue, callback)
-      } else {
+      const { props } = this
+      if (props.value === undefined) {
         this.setState(wrapUpdateField(newValue, 'value'), callback)
+      }
+
+      if (props.onChange) {
+        props.onChange(newValue, callback)
       }
     }
 
@@ -48,8 +52,7 @@ const createMutableContext = (defaultValue, defaultEnhancer) => {
   }
 
   const MutableConsumer = props => {
-    return createElement(Consumer, props, (state, ...args) =>
-      props.children(state, ...args))
+    return createElement(Consumer, props, (state, ...args) => props.children(state, ...args))
   }
 
   return {
