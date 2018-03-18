@@ -18,8 +18,8 @@ test('basic', () => {
     render() {
       return (
         <Consumer>
-          {(value, ctx) => {
-            return <button onClick={() => ctx.set(value + 1)}>{value}</button>
+          {ctx => {
+            return <button onClick={() => ctx.set(ctx.value + 1)}>{ctx.value}</button>
           }}
         </Consumer>
       )
@@ -49,8 +49,10 @@ test('onChange', () => {
           }
         >
           <Consumer>
-            {(value, ctx) => {
-              return <button onClick={() => ctx.set(prevValue => prevValue + 1)}>{value}</button>
+            {ctx => {
+              return (
+                <button onClick={() => ctx.set(prevValue => prevValue + 1)}>{ctx.value}</button>
+              )
             }}
           </Consumer>
         </Provider>
@@ -78,16 +80,16 @@ test('enhancer', () => {
       }}
     >
       <C1.Consumer>
-        {(value, ctx) => (
+        {ctx => (
           <button id="btn1" onClick={ctx.inc1}>
-            {value}
+            {ctx.value}
           </button>
         )}
       </C1.Consumer>
       <C1.Consumer>
-        {(value, ctx) => (
+        {ctx => (
           <button id="btn2" onClick={ctx.inc2}>
-            {value}
+            {ctx.value}
           </button>
         )}
       </C1.Consumer>

@@ -49,7 +49,7 @@ const createMutableContext = (defaultValue, defaultEnhancer) => {
 
   const MutableConsumer = props => {
     return createElement(Consumer, props, (state, ...args) =>
-      props.children(state.value, state, ...args))
+      props.children(state, ...args))
   }
 
   return {

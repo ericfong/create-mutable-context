@@ -15,13 +15,13 @@ import createMutableContext from 'create-mutable-context'
 
 const { Provider, Consumer } = createMutableContext()
 
-<Provider value={this.state.valueA}>
+<Provider value={1}>
   <Consumer>
-    {(value, ctx) => {
-      // second argument is ctx with a set function
+    {ctx => {
+      // ctx contain value and a set function
       return (
-        <button onClick={() => ctx.set(value + 1)}>
-          {value}
+        <button onClick={() => ctx.set(ctx.value + 1)}>
+          {ctx.value}
         </button>
       )
     }}
@@ -66,10 +66,10 @@ class App extends React.Component {
         onChange={valueA => this.setState({ valueA })}
       >
         <Consumer>
-          {(value, ctx) => {
+          {ctx => {
             return (
-              <button onClick={() => ctx.set(value + 1)}>
-                {value}
+              <button onClick={() => ctx.set(ctx.value + 1)}>
+                {ctx.value}
               </button>
             )
           }}
@@ -116,13 +116,13 @@ const App = () => (
     }}
   >
     <C.Consumer>
-      {(value, ctx) => (
+      {ctx => (
         <button
           // ctx get both inc1 and inc2 functions
           onClick={ctx.inc1}
           onMouseOver={ctx.inc2}
         >
-          {value}
+          {ctx.value}
         </button>
       )}
     </C.Consumer>
