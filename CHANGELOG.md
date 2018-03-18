@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.4.1"></a>
+## [0.4.1](https://github.com/ericfong/create-mutable-context/compare/v0.4.0...v0.4.1) (2018-03-18)
+
+
+### Bug Fixes
+
+* align value/defaultValue controlled/uncontrolled pattern with normal react input field ([97291cf](https://github.com/ericfong/create-mutable-context/commit/97291cf))
+* eslintrc ([a5827d4](https://github.com/ericfong/create-mutable-context/commit/a5827d4))
+
+
+
 <a name="0.4.0"></a>
 # [0.4.0](https://github.com/ericfong/create-mutable-context/compare/v0.3.1...v0.4.0) (2018-03-18)
 
