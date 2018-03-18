@@ -63,3 +63,49 @@ test('onChange', () => {
   button.simulate('click')
   expect(button.text()).toBe('2')
 })
+
+test('enhancer', () => {
+  const C1 = createMutableContext(1, ctx => {
+    ctx.inc1 = () => ctx.set(prevValue => prevValue + 1)
+    return ctx
+  })
+
+  const App = () => (
+    <C1.Provider
+      enhancer={ctx => {
+        ctx.inc2 = () => ctx.set(prevValue => prevValue + 2)
+        return ctx
+      }}
+    >
+      <C1.Consumer>
+        {(value, ctx) => (
+          <button id="btn1" onClick={ctx.inc1}>
+            {value}
+          </button>
+        )}
+      </C1.Consumer>
+      <C1.Consumer>
+        {(value, ctx) => (
+          <button id="btn2" onClick={ctx.inc2}>
+            {value}
+          </button>
+        )}
+      </C1.Consumer>
+    </C1.Provider>
+  )
+
+  const wrap = mount(<App />)
+  const btn1 = wrap.find('#btn1')
+  const btn2 = wrap.find('#btn2')
+
+  expect(btn1.text()).toBe('1')
+  expect(btn2.text()).toBe('1')
+
+  btn1.simulate('click')
+  expect(btn1.text()).toBe('2')
+  expect(btn2.text()).toBe('2')
+
+  btn2.simulate('click')
+  expect(btn1.text()).toBe('4')
+  expect(btn2.text()).toBe('4')
+})

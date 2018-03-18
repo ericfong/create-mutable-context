@@ -8,23 +8,28 @@ export const wrapUpdateField = (updater, stateKey) => {
     : { [stateKey]: updater }
 }
 
-const createMutableContext = defaultValue => {
+const createMutableContext = (defaultValue, defaultEnhancer) => {
   const { Provider, Consumer } = createReactContext(defaultValue)
 
   class MutableProvider extends Component {
     constructor(props) {
       super(props)
 
-      this.state = {
+      let state = {
         set: this.set,
-        value: defaultValue,
-        ...this.props,
+        value: this.props.value || defaultValue,
       }
+
+      if (defaultEnhancer) state = defaultEnhancer(state, props)
+      const { enhancer } = props
+      if (enhancer) state = enhancer(state, props)
+
+      this.state = state
     }
 
     componentWillReceiveProps(nextProps) {
       if (nextProps.value !== this.props.value) {
-        this.setState(nextProps)
+        this.setState({ value: nextProps.value })
       }
     }
 
