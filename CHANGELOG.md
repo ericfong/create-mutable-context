@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.5.0"></a>
+# [0.5.0](https://github.com/ericfong/create-mutable-context/compare/v0.4.1...v0.5.0) (2018-03-19)
+
+
+### Features
+
+* add back calculateChangedBits as second argument and for observedBits ([33d5e5e](https://github.com/ericfong/create-mutable-context/commit/33d5e5e))
+
+
+
 <a name="0.4.1"></a>
 ## [0.4.1](https://github.com/ericfong/create-mutable-context/compare/v0.4.0...v0.4.1) (2018-03-18)
 
