@@ -8,8 +8,11 @@ export const wrapUpdateField = (updater, stateKey) => {
     : { [stateKey]: updater }
 }
 
-const createMutableContext = (globalDefaultValue, calculateChangedBits, defaultEnhancer) => {
-  const { Provider, Consumer } = createReactContext(globalDefaultValue, calculateChangedBits)
+const createMutableContext = (globalDefaultValue, calcChangedBits, defaultEnhancer) => {
+  const { Provider, Consumer } = createReactContext(
+    globalDefaultValue,
+    calcChangedBits ? ({ value: a }, { value: b }) => calcChangedBits(a, b) : null
+  )
 
   class MutableProvider extends Component {
     constructor(props) {

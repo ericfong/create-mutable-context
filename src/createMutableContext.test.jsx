@@ -124,7 +124,7 @@ class Indirection extends React.Component {
 test('can skip consumers with bitmask', () => {
   const renders = { Foo: 0, Bar: 0 }
 
-  const Context = createMutableContext({ foo: 0, bar: 0 }, ({ value: a }, { value: b }) => {
+  const Context = createMutableContext({ foo: 0, bar: 0 }, (a, b) => {
     let result = 0
     if (a.foo !== b.foo) result |= 0b01
     if (a.bar !== b.bar) result |= 0b10

@@ -1,4 +1,4 @@
-wrap new React.createContext() to provide context with a set function for Consumer
+really minimal wrap on new React.createContext() to provide context with a set function for Consumer
 
 
 
