@@ -8,10 +8,8 @@ export const wrapUpdateField = (updater, stateKey) => {
     : { [stateKey]: updater }
 }
 
-const findDefined = (...args) => args.find(a => a !== undefined)
-
-const createMutableContext = (globalDefaultValue, defaultEnhancer) => {
-  const { Provider, Consumer } = createReactContext(globalDefaultValue)
+const createMutableContext = (globalDefaultValue, calculateChangedBits, defaultEnhancer) => {
+  const { Provider, Consumer } = createReactContext(globalDefaultValue, calculateChangedBits)
 
   class MutableProvider extends Component {
     constructor(props) {
@@ -19,7 +17,7 @@ const createMutableContext = (globalDefaultValue, defaultEnhancer) => {
 
       let state = {
         set: this.set,
-        value: findDefined(props.value, props.defaultValue, globalDefaultValue),
+        value: [props.value, props.defaultValue, globalDefaultValue].find(a => a !== undefined),
       }
 
       if (defaultEnhancer) state = defaultEnhancer(state, props)

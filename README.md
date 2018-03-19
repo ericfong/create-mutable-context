@@ -85,7 +85,7 @@ class App extends React.Component {
 
 createMutableContext signature:
 ```js
-createMutableContext(defaultValue, defaultEnhancer)
+createMutableContext(defaultValue, calculateChangedBits, defaultEnhancer)
 ```
 
 enhancer is a function that accept ctx and return modified ctx
@@ -105,7 +105,7 @@ const defaultEnhancer = ctx => {
   ctx.inc1 = () => ctx.set(prevValue => prevValue + 1)
   return ctx
 }
-const C = createMutableContext(defaultValue, defaultEnhancer)
+const C = createMutableContext(defaultValue, null, defaultEnhancer)
 
 const App = () => (
   <C.Provider

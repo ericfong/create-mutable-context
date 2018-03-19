@@ -1,4 +1,4 @@
-/* eslint-disable react/no-multi-comp */
+/* eslint-disable react/no-multi-comp, no-bitwise */
 import 'raf/polyfill'
 import React from 'react'
 import Enzyme, { mount } from 'enzyme'
@@ -67,7 +67,7 @@ test('onChange', () => {
 })
 
 test('enhancer', () => {
-  const C1 = createMutableContext(1, ctx => {
+  const C1 = createMutableContext(1, null, ctx => {
     ctx.inc1 = () => ctx.set(prevValue => prevValue + 1)
     return ctx
   })
@@ -110,4 +110,72 @@ test('enhancer', () => {
   btn2.simulate('click')
   expect(btn1.text()).toBe('4')
   expect(btn2.text()).toBe('4')
+})
+
+class Indirection extends React.Component {
+  shouldComponentUpdate() {
+    return false
+  }
+  render() {
+    return this.props.children
+  }
+}
+
+test('can skip consumers with bitmask', () => {
+  const renders = { Foo: 0, Bar: 0 }
+
+  const Context = createMutableContext({ foo: 0, bar: 0 }, ({ value: a }, { value: b }) => {
+    let result = 0
+    if (a.foo !== b.foo) result |= 0b01
+    if (a.bar !== b.bar) result |= 0b10
+    return result
+  })
+
+  function App(props) {
+    return (
+      <Context.Provider value={{ foo: props.foo, bar: props.bar }}>
+        <Indirection>
+          <Indirection>
+            <Context.Consumer observedBits={0b01}>
+              {({ value }) => {
+                renders.Foo += 1
+                return <span prop={`Foo: ${value.foo}`} />
+              }}
+            </Context.Consumer>
+          </Indirection>
+          <Indirection>
+            <Context.Consumer observedBits={0b10}>
+              {({ value }) => {
+                renders.Bar += 1
+                return <span prop={`Bar: ${value.bar}`} />
+              }}
+            </Context.Consumer>
+          </Indirection>
+        </Indirection>
+      </Context.Provider>
+    )
+  }
+
+  const wrapper = mount(<App foo={1} bar={1} />)
+  expect(renders.Foo).toBe(1)
+  expect(renders.Bar).toBe(1)
+  expect(wrapper.contains(<span prop="Foo: 1" />, <span prop="Bar: 1" />)).toBe(true)
+
+  // Update only foo
+  wrapper.setProps({ foo: 2, bar: 1 })
+  expect(renders.Foo).toBe(2)
+  expect(renders.Bar).toBe(1)
+  expect(wrapper.contains(<span prop="Foo: 2" />, <span prop="Bar: 1" />)).toBe(true)
+
+  // Update only bar
+  wrapper.setProps({ bar: 2, foo: 2 })
+  expect(renders.Foo).toBe(2)
+  expect(renders.Bar).toBe(2)
+  expect(wrapper.contains(<span prop="Foo: 2" />, <span prop="Bar: 2" />)).toBe(true)
+
+  // Update both
+  wrapper.setProps({ bar: 3, foo: 3 })
+  expect(renders.Foo).toBe(3)
+  expect(renders.Bar).toBe(3)
+  expect(wrapper.contains(<span prop="Foo: 3" />, <span prop="Bar: 3" />))
 })
