@@ -1,4 +1,3 @@
-/* eslint-disable react/no-unused-state */
 import { createElement, Component } from 'react'
 import createReactContext from 'create-react-context'
 
@@ -62,10 +61,7 @@ const createMutableContext = (globalDefaultValue, calcChangedBits, defaultEnhanc
     }
   }
 
-  return {
-    Provider: MutableProvider,
-    Consumer,
-  }
+  return { Provider: MutableProvider, Consumer }
 }
 
 export default createMutableContext

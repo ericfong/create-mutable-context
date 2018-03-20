@@ -5,6 +5,7 @@ import Enzyme, { mount } from 'enzyme'
 import Adapter from 'enzyme-adapter-react-16'
 
 import createMutableContext, { wrapUpdateField } from '.'
+import { Indirection } from './stateMutableContext.test'
 
 Enzyme.configure({ adapter: new Adapter() })
 
@@ -111,15 +112,6 @@ test('enhancer', () => {
   expect(btn1.text()).toBe('4')
   expect(btn2.text()).toBe('4')
 })
-
-class Indirection extends React.Component {
-  shouldComponentUpdate() {
-    return false
-  }
-  render() {
-    return this.props.children
-  }
-}
 
 test('can skip consumers with bitmask', () => {
   const renders = { Foo: 0, Bar: 0 }
