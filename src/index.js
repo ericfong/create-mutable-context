@@ -18,12 +18,16 @@ const createMutableContext = (globalDefaultValue, calcChangedBits, defaultEnhanc
     constructor(props) {
       super(props)
 
-      let state = {
-        set: this.set,
-        value: [props.value, props.defaultValue, globalDefaultValue].find(a => a !== undefined),
-      }
+      const value = [props.value, props.defaultValue, globalDefaultValue].find(a => a !== undefined)
+      let state = this.getStateFromValue(value)
 
+      // basic enhancer
+      // TODO ensure state is object?
+      state.set = this.set
+
+      // global-level enhancer
       if (defaultEnhancer) state = defaultEnhancer(state, props)
+      // provider-level enhancer
       const { enhancer } = props
       if (enhancer) state = enhancer(state, props)
 
@@ -32,19 +36,25 @@ const createMutableContext = (globalDefaultValue, calcChangedBits, defaultEnhanc
 
     componentWillReceiveProps(nextProps) {
       if (nextProps.value !== this.props.value) {
-        this.setState({ value: nextProps.value })
+        this.setState(this.getStateFromValue(nextProps.value))
       }
     }
 
-    set = (newValue, callback) => {
-      const { props } = this
-      if (props.value === undefined) {
-        this.setState(wrapUpdateField(newValue, 'value'), callback)
-      }
+    // allow override to change ctx to value relationship
+    getStateFromValue(value) {
+      return { value }
+    }
 
-      if (props.onChange) {
-        props.onChange(newValue, callback)
-      }
+    getStateUpdater(updater) {
+      return wrapUpdateField(updater, 'value')
+    }
+
+    set = (newValue, callback) => {
+      const { value, onChange } = this.props
+      // this is Uncontrolled
+      if (value === undefined) this.setState(this.getStateUpdater(newValue), callback)
+      // always fire onChange for persist usage
+      if (onChange) onChange(newValue, callback)
     }
 
     render() {
@@ -52,13 +62,9 @@ const createMutableContext = (globalDefaultValue, calcChangedBits, defaultEnhanc
     }
   }
 
-  const MutableConsumer = props => {
-    return createElement(Consumer, props, (state, ...args) => props.children(state, ...args))
-  }
-
   return {
     Provider: MutableProvider,
-    Consumer: MutableConsumer,
+    Consumer,
   }
 }
 
