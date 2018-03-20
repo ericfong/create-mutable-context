@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.6.0-0"></a>
+# [0.6.0-0](https://github.com/ericfong/create-mutable-context/compare/v0.5.1...v0.6.0-0) (2018-03-20)
+
+
+### Bug Fixes
+
+* rename files ([4e5f29d](https://github.com/ericfong/create-mutable-context/commit/4e5f29d))
+
+
+### Features
+
+* add stateMutableContext which merge Provider.value into ctx instead of just ctx.value ([c246d2b](https://github.com/ericfong/create-mutable-context/commit/c246d2b))
+* prepare for extends ([bdca31a](https://github.com/ericfong/create-mutable-context/commit/bdca31a))
+
+
+
 <a name="0.5.1"></a>
 ## [0.5.1](https://github.com/ericfong/create-mutable-context/compare/v0.5.0...v0.5.1) (2018-03-19)
 
