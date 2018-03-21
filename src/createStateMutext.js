@@ -1,31 +1,21 @@
 import { createElement, Component } from 'react'
 import createReactContext from 'create-react-context'
 
-export const wrapUpdateField = (updater, stateKey) => {
-  return typeof updater === 'function'
-    ? (prevState, props) => ({ [stateKey]: updater(prevState[stateKey], props) })
-    : { [stateKey]: updater }
-}
-
-const createMutableContext = (globalDefaultValue, calcChangedBits, defaultEnhancer) => {
-  const { Provider, Consumer } = createReactContext(
-    globalDefaultValue,
-    calcChangedBits ? ({ value: a }, { value: b }) => calcChangedBits(a, b) : null
-  )
+const createMutableContext = (confDefaultValue, calcChangedBits, confEnhancer) => {
+  const { Provider, Consumer } = createReactContext(confDefaultValue, calcChangedBits)
 
   class MutableProvider extends Component {
     constructor(props) {
       super(props)
 
-      const value = [props.value, props.defaultValue, globalDefaultValue].find(a => a !== undefined)
-      let state = this.getStateFromValue(value)
+      const value = [props.value, props.defaultValue, confDefaultValue].find(a => a !== undefined)
+      let state = this.getStateFromValue(value) || {}
 
       // basic enhancer
-      // TODO ensure state is object?
       state.set = this.set
 
       // global-level enhancer
-      if (defaultEnhancer) state = defaultEnhancer(state, props)
+      if (confEnhancer) state = confEnhancer(state, props)
       // provider-level enhancer
       const { enhancer } = props
       if (enhancer) state = enhancer(state, props)
@@ -41,11 +31,13 @@ const createMutableContext = (globalDefaultValue, calcChangedBits, defaultEnhanc
 
     // allow override to change ctx to value relationship
     getStateFromValue(value) {
-      return { value }
+      // prevent overwrite set or enhanced functions? in componentWillReceiveProps
+      return value
     }
 
     getStateUpdater(updater) {
-      return wrapUpdateField(updater, 'value')
+      // prevent overwrite set or enhanced functions? in set function
+      return updater
     }
 
     set = (newValue, callback) => {

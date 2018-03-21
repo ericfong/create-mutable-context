@@ -133,12 +133,12 @@ const App = () => (
 
 ## access via ctx.foo instead ctx.value.foo
 
-Can use `stateMutableContext` to mutate whole provider state instead of a value field only.
+Can use `createStateMutext` to mutate whole provider state instead of a value field only.
 
 ```js
-import { stateMutableContext } from 'create-mutable-context'
+import { createStateMutext } from 'create-mutable-context'
 
-const C = stateMutableContext({ foo: 1 })
+const C = createStateMutext({ foo: 1 })
 
 const App = () => (
   <C.Provider>

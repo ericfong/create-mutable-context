@@ -5,7 +5,7 @@ import Enzyme, { mount } from 'enzyme'
 import Adapter from 'enzyme-adapter-react-16'
 
 import createMutableContext, { wrapUpdateField } from '.'
-import { Indirection } from './stateMutableContext.test'
+import { Indirection } from './createStateMutext.test'
 
 Enzyme.configure({ adapter: new Adapter() })
 

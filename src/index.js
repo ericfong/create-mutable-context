@@ -1,7 +1,7 @@
-import mutableContext, { wrapUpdateField } from './mutableContext'
+import createValueMutext, { wrapUpdateField } from './createValueMutext'
 
-export { mutableContext, wrapUpdateField }
-export default mutableContext
+export { createValueMutext, wrapUpdateField }
+export default createValueMutext
 
-export { default as stateMutableContext } from './stateMutableContext'
+export { default as createStateMutext } from './createStateMutext'
 export { default as getBitmaskTable } from './getBitmaskTable'
