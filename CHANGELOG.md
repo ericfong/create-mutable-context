@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.8.0"></a>
+# [0.8.0](https://github.com/ericfong/create-mutable-context/compare/v0.7.0...v0.8.0) (2018-03-21)
+
+
+### Bug Fixes
+
+* use createStateMutext as base function for createValueMutext ([95884d0](https://github.com/ericfong/create-mutable-context/commit/95884d0))
+
+
+### Features
+
+* add createObservableMutext which Consumers can observe and react to part of changes from Provider ([617cb3e](https://github.com/ericfong/create-mutable-context/commit/617cb3e))
+
+
+
 <a name="0.7.0"></a>
 # [0.7.0](https://github.com/ericfong/create-mutable-context/compare/v0.6.0...v0.7.0) (2018-03-20)
 
