@@ -4,7 +4,7 @@ import createReactContext from 'create-react-context'
 const createMutableContext = (confDefaultValue, calcChangedBits, confEnhancer) => {
   const { Provider, Consumer } = createReactContext(confDefaultValue, calcChangedBits)
 
-  class MutableProvider extends Component {
+  class StateMutextProvider extends Component {
     constructor(props) {
       super(props)
 
@@ -53,7 +53,7 @@ const createMutableContext = (confDefaultValue, calcChangedBits, confEnhancer) =
     }
   }
 
-  return { Provider: MutableProvider, Consumer }
+  return { Provider: StateMutextProvider, Consumer }
 }
 
 export default createMutableContext

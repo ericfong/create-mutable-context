@@ -1,6 +1,6 @@
 import createStateMutext from './createStateMutext'
 
-export const wrapUpdateField = (updater, stateKey) => {
+export const wrapUpdaterScope = (updater, stateKey) => {
   return typeof updater === 'function'
     ? (prevState, props) => ({ [stateKey]: updater(prevState[stateKey], props) })
     : { [stateKey]: updater }
@@ -13,16 +13,16 @@ const createValueMutext = (confDefaultValue, calcChangedBits, confEnhancer) => {
     confEnhancer
   )
 
-  class StateMutableProvider extends Provider {
+  class ValueMutextProvider extends Provider {
     getStateFromValue(value) {
       return { value }
     }
     getStateUpdater(updater) {
-      return wrapUpdateField(updater, 'value')
+      return wrapUpdaterScope(updater, 'value')
     }
   }
 
-  return { Provider: StateMutableProvider, Consumer }
+  return { Provider: ValueMutextProvider, Consumer }
 }
 
 export default createValueMutext

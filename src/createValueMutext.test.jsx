@@ -4,7 +4,7 @@ import React from 'react'
 import Enzyme, { mount } from 'enzyme'
 import Adapter from 'enzyme-adapter-react-16'
 
-import createMutableContext, { wrapUpdateField } from '.'
+import createMutableContext, { wrapUpdaterScope } from '.'
 import { Indirection } from './createStateMutext.test'
 
 Enzyme.configure({ adapter: new Adapter() })
@@ -46,7 +46,7 @@ test('onChange', () => {
         <Provider
           value={this.state.valueA}
           onChange={(updater, callback) =>
-            this.setState(wrapUpdateField(updater, 'valueA'), callback)
+            this.setState(wrapUpdaterScope(updater, 'valueA'), callback)
           }
         >
           <Consumer>

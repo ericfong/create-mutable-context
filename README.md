@@ -154,3 +154,37 @@ const App = () => (
   </C.Provider>
 )
 ```
+
+
+## createObservableMutext
+
+Consumers can observe and react to part of changes from Provider
+
+```js
+import { createObservableMutext } from 'create-mutable-context'
+
+const C = createObservableMutext({ foo: 0, bar: 0 }, { foo: {}, bar: {} })
+
+const App = () => (
+  <C.Provider value={{ foo: 1, bar: 1 }}>
+    <C.Consumer
+      // observe to foo and only render if foo is changed
+      observe="foo"
+    >
+      {ctx => `Foo: ${ctx.foo}`}
+    </C.Consumer>
+    <C.Consumer
+      // observe to bar and only render if bar is changed
+      observe="bar"
+    >
+      {ctx => `Bar: ${ctx.bar}`}
+    </C.Consumer>
+    <C.Consumer
+      // observe to bar OR foo and render if bar OR foo are changed
+      observe="bar,foo"
+    >
+      {ctx => `BarOrFoo: ${ctx.bar} ${ctx.foo}`}
+    </C.Consumer>
+  </C.Provider>
+)
+```
