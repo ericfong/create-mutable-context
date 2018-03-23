@@ -1,4 +1,4 @@
-import createStateMutext from './createStateMutext'
+import createMutableContext from './createMutableContext'
 
 export const wrapUpdaterScope = (updater, stateKey) => {
   return typeof updater === 'function'
@@ -6,11 +6,10 @@ export const wrapUpdaterScope = (updater, stateKey) => {
     : { [stateKey]: updater }
 }
 
-const createValueMutext = (confDefaultValue, calcChangedBits, confEnhancer) => {
-  const { Provider, Consumer } = createStateMutext(
+const createValueMutext = (confDefaultValue, calcChangedBits) => {
+  const { Provider, Consumer } = createMutableContext(
     confDefaultValue,
-    calcChangedBits ? ({ value: a }, { value: b }) => calcChangedBits(a, b) : undefined,
-    confEnhancer
+    calcChangedBits ? ({ value: a }, { value: b }) => calcChangedBits(a, b) : undefined
   )
 
   class ValueMutextProvider extends Provider {

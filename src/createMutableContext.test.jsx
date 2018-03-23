@@ -4,11 +4,11 @@ import React from 'react'
 import Enzyme, { mount } from 'enzyme'
 import Adapter from 'enzyme-adapter-react-16'
 
-import { createStateMutext } from '.'
+import createMutableContext from './createMutableContext'
 
 Enzyme.configure({ adapter: new Adapter() })
 
-export class Indirection extends React.Component {
+class Indirection extends React.Component {
   shouldComponentUpdate() {
     return false
   }
@@ -18,7 +18,7 @@ export class Indirection extends React.Component {
 }
 
 test('basic', () => {
-  const C = createStateMutext({ foo: 1 })
+  const C = createMutableContext({ foo: 1 })
 
   const App = () => (
     <C.Provider>
@@ -39,7 +39,7 @@ test('basic', () => {
 test('controlled', () => {
   let calcChangeA
   let calcChangeB
-  const C = createStateMutext(null, (a, b) => {
+  const C = createMutableContext(null, (a, b) => {
     calcChangeA = a
     calcChangeB = b
     return 0b1111111111
@@ -61,4 +61,33 @@ test('controlled', () => {
 
   expect(calcChangeA).toMatchObject({ foo: 1 })
   expect(calcChangeB).toMatchObject({ foo: 2 })
+})
+
+test('enhancer', () => {
+  const C1 = createMutableContext({ foo: 1 }, null, {
+    providerConstruct(provider) {
+      provider.state.inc1 = () => provider.set(prev => ({ foo: prev.foo + 1 }))
+    },
+  })
+
+  const App = () => (
+    <C1.Provider>
+      <C1.Consumer>
+        {ctx => {
+          return (
+            <button id="btn1" onClick={ctx.inc1}>
+              {ctx.foo}
+            </button>
+          )
+        }}
+      </C1.Consumer>
+    </C1.Provider>
+  )
+
+  const wrap = mount(<App />)
+  const btn1 = wrap.find('#btn1')
+
+  expect(btn1.text()).toBe('1')
+  btn1.simulate('click')
+  expect(btn1.text()).toBe('2')
 })

@@ -4,7 +4,7 @@
   "description": "wrap new React.createContext() to provide mutate function for Consumer",
   "scripts": {
     "test": "jest",
-    "build": "babel src -d lib --copy-files --ignore __tests__,.test.js,.test.jsx",
+    "build": "babel src -d lib --copy-files --ignore __tests__,.test.js,.test.jsx,test-",
     "prepublish": "yarn build"
   },
   "main": "lib/index.js",

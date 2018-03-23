@@ -5,9 +5,17 @@ import Enzyme, { mount } from 'enzyme'
 import Adapter from 'enzyme-adapter-react-16'
 
 import createObservableMutext from './createObservableMutext'
-import { Indirection } from './createStateMutext.test'
 
 Enzyme.configure({ adapter: new Adapter() })
+
+class Indirection extends React.Component {
+  shouldComponentUpdate() {
+    return false
+  }
+  render() {
+    return this.props.children
+  }
+}
 
 test('can skip consumers with bitmask', () => {
   const renders = { Foo: 0, Bar: 0, BarOrFoo: 0 }

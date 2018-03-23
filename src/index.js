@@ -3,7 +3,7 @@ import createValueMutext, { wrapUpdaterScope } from './createValueMutext'
 export { createValueMutext, wrapUpdaterScope }
 export default createValueMutext
 
-export { default as createStateMutext } from './createStateMutext'
+export { default as createStateMutext } from './createMutableContext'
 
 export { default as getBitmaskTable } from './getBitmaskTable'
 

@@ -4,14 +4,22 @@ import React from 'react'
 import Enzyme, { mount } from 'enzyme'
 import Adapter from 'enzyme-adapter-react-16'
 
-import createMutableContext, { wrapUpdaterScope } from '.'
-import { Indirection } from './createStateMutext.test'
+import createValueMutext, { wrapUpdaterScope } from './createValueMutext'
 
 Enzyme.configure({ adapter: new Adapter() })
 
-const { Provider, Consumer } = createMutableContext()
+export class Indirection extends React.Component {
+  shouldComponentUpdate() {
+    return false
+  }
+  render() {
+    return this.props.children
+  }
+}
 
 test('basic', () => {
+  const { Provider, Consumer } = createValueMutext()
+
   class Child extends React.Component {
     shouldComponentUpdate() {
       return false
@@ -39,6 +47,8 @@ test('basic', () => {
 })
 
 test('onChange', () => {
+  const { Provider, Consumer } = createValueMutext()
+
   class App extends React.Component {
     state = { valueA: 1 }
     render() {
@@ -67,56 +77,10 @@ test('onChange', () => {
   expect(button.text()).toBe('2')
 })
 
-test('enhancer', () => {
-  const C1 = createMutableContext(1, null, ctx => {
-    ctx.inc1 = () => ctx.set(prevValue => prevValue + 1)
-    return ctx
-  })
-
-  const App = () => (
-    <C1.Provider
-      enhancer={ctx => {
-        ctx.inc2 = () => ctx.set(prevValue => prevValue + 2)
-        return ctx
-      }}
-    >
-      <C1.Consumer>
-        {ctx => (
-          <button id="btn1" onClick={ctx.inc1}>
-            {ctx.value}
-          </button>
-        )}
-      </C1.Consumer>
-      <C1.Consumer>
-        {ctx => (
-          <button id="btn2" onClick={ctx.inc2}>
-            {ctx.value}
-          </button>
-        )}
-      </C1.Consumer>
-    </C1.Provider>
-  )
-
-  const wrap = mount(<App />)
-  const btn1 = wrap.find('#btn1')
-  const btn2 = wrap.find('#btn2')
-
-  expect(btn1.text()).toBe('1')
-  expect(btn2.text()).toBe('1')
-
-  btn1.simulate('click')
-  expect(btn1.text()).toBe('2')
-  expect(btn2.text()).toBe('2')
-
-  btn2.simulate('click')
-  expect(btn1.text()).toBe('4')
-  expect(btn2.text()).toBe('4')
-})
-
 test('can skip consumers with bitmask', () => {
   const renders = { Foo: 0, Bar: 0 }
 
-  const Context = createMutableContext({ foo: 0, bar: 0 }, (a, b) => {
+  const C = createValueMutext({ foo: 0, bar: 0 }, (a, b) => {
     let result = 0
     if (a.foo !== b.foo) result |= 0b01
     if (a.bar !== b.bar) result |= 0b10
@@ -125,26 +89,26 @@ test('can skip consumers with bitmask', () => {
 
   function App(props) {
     return (
-      <Context.Provider value={{ foo: props.foo, bar: props.bar }}>
+      <C.Provider value={{ foo: props.foo, bar: props.bar }}>
         <Indirection>
           <Indirection>
-            <Context.Consumer observedBits={0b01}>
+            <C.Consumer observedBits={0b01}>
               {({ value }) => {
                 renders.Foo += 1
                 return <span prop={`Foo: ${value.foo}`} />
               }}
-            </Context.Consumer>
+            </C.Consumer>
           </Indirection>
           <Indirection>
-            <Context.Consumer observedBits={0b10}>
+            <C.Consumer observedBits={0b10}>
               {({ value }) => {
                 renders.Bar += 1
                 return <span prop={`Bar: ${value.bar}`} />
               }}
-            </Context.Consumer>
+            </C.Consumer>
           </Indirection>
         </Indirection>
-      </Context.Provider>
+      </C.Provider>
     )
   }
 
