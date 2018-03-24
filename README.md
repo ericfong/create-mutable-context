@@ -65,69 +65,11 @@ class App extends React.Component {
         value={this.state.valueA}
         onChange={valueA => this.setState({ valueA })}
       >
-        <Consumer>
-          {ctx => {
-            return (
-              <button onClick={() => ctx.set(ctx.value + 1)}>
-                {ctx.value}
-              </button>
-            )
-          }}
-        </Consumer>
+      ...
       </Provider>
     )
   }
 }
-```
-
-
-## use enhancer to add functions to ctx
-
-createMutableContext signature:
-```js
-createMutableContext(defaultValue, calculateChangedBits, defaultEnhancer)
-```
-
-enhancer is a function that accept ctx and return modified ctx
-```js
-(ctx, providerProps) => modifiedCtx
-```
-
-You can also assign enhancer to Provider props.
-
-Both enhancers are run in Provider constructor once (with provider instance props at that time). defaultEnhancer will be run before Provider enhancer.
-
-```js
-import createMutableContext from 'create-mutable-context'
-
-const defaultValue = 1
-const defaultEnhancer = ctx => {
-  ctx.inc1 = () => ctx.set(prevValue => prevValue + 1)
-  return ctx
-}
-const C = createMutableContext(defaultValue, null, defaultEnhancer)
-
-const App = () => (
-  <C.Provider
-    // add enhancer in Provider level
-    enhancer={ctx => {
-      ctx.inc2 = () => ctx.set(prevValue => prevValue + 2)
-      return ctx
-    }}
-  >
-    <C.Consumer>
-      {ctx => (
-        <button
-          // ctx get both inc1 and inc2 functions
-          onClick={ctx.inc1}
-          onMouseOver={ctx.inc2}
-        >
-          {ctx.value}
-        </button>
-      )}
-    </C.Consumer>
-  </C.Provider>
-)
 ```
 
 
@@ -158,7 +100,7 @@ const App = () => (
 
 ## createObservableMutext
 
-Consumers can observe and react to part of changes from Provider
+Consumers can observe part of changes easily by names. Names are auto calculate to bitmask
 
 ```js
 import { createObservableMutext } from 'create-mutable-context'
@@ -166,7 +108,7 @@ import { createObservableMutext } from 'create-mutable-context'
 const C = createObservableMutext({ foo: 0, bar: 0 }, { foo: {}, bar: {} })
 
 const App = () => (
-  <C.Provider value={{ foo: 1, bar: 1 }}>
+  <C.Provider>
     <C.Consumer
       // observe to foo and only render if foo is changed
       observe="foo"
@@ -184,6 +126,51 @@ const App = () => (
       observe="bar,foo"
     >
       {ctx => `BarOrFoo: ${ctx.bar} ${ctx.foo}`}
+    </C.Consumer>
+  </C.Provider>
+)
+```
+
+
+## use option to add functions to ctx
+
+createMutableContext signature:
+```js
+import createMutableContext from 'create-mutable-context'
+
+const options = {
+  // init at the end of provider constructor
+  providerConstruct: (provider) => {},
+
+  // init at the end of consumer constructor
+  consumerConstruct: (consumer) => {},
+
+  // prepare ctx to pass to consumer children function
+  consumerCtx: (ctx, consumer) => ctx,
+}
+createMutableContext(defaultValue, calculateChangedBits, option)
+
+const C = createMutableContext(defaultValue, null, {
+  providerConstruct(provider) {
+    Object.assign(provider.state, {
+      inc1() {
+        this.set(prevState => { value: prevState.value + 1 })
+      }
+    })
+  },  
+})
+
+const App = () => (
+  <C.Provider>
+    <C.Consumer>
+      {ctx => (
+        <button
+          // can call inc1
+          onClick={ctx.inc1}
+        >
+          {ctx.value}
+        </button>
+      )}
     </C.Consumer>
   </C.Provider>
 )
